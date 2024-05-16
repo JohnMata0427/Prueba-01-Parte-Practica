@@ -1,3 +1,7 @@
+# Page Preview
+
+![image](https://github.com/JohnMata0427/Prueba-01-Parte-Practica/assets/150484680/2c256b20-22fe-429f-9238-2aedea264d9e)
+
 # Astro Starter Kit: Basics
 
 ```sh
