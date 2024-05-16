@@ -8,7 +8,7 @@ import { type MoviesTypes, type MovieListTypes } from "../data/types.js";
 
 export async function getStaticPaths() {
   let movies = await (requestAPIList() as Promise<MovieListTypes>);
-  const paths = movies.titles.map((movie) => ({ params: { id: movie.id } }));
+  const paths = movies && movies.titles ? movies.titles.map((movie) => ({ params: { id: movie.id } })) : [];
   return paths;
 }
 
