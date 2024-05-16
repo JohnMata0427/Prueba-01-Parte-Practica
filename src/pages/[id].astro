@@ -13,7 +13,7 @@ export async function getStaticPaths() {
     if (!movies || !movies.titles) {
       throw new Error('No movies or titles found');
     }
-    const paths = movies.titles.map((movie) => ({ params: { id: movie.id } }));
+    const paths = movies.titles ? movies.titles.map((movie) => ({ params: { id: movie.id } })) : [];
     return paths;
   } catch (error) {
     console.error('Error in getStaticPaths:', error);
