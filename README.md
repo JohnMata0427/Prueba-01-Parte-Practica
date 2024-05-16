@@ -1,6 +1,6 @@
 # Page Preview
 
-![image](https://github.com/JohnMata0427/Prueba-01-Parte-Practica/assets/150484680/2c256b20-22fe-429f-9238-2aedea264d9e)
+![image](https://github.com/JohnMata0427/Prueba-01-Parte-Practica/assets/150484680/2faebcf9-1e8a-4373-adac-138744e27942)
 
 # Astro Starter Kit: Basics
 
