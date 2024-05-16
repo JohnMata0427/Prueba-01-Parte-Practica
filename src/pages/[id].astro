@@ -3,21 +3,14 @@
 import Layout from "../layouts/Layout.astro";
 import Card from "../components/Card.astro";
 import { requestAPI, requestAPIList }  from "../data/request.js";
-import { type MoviesTypes, type MovieListTypes, type Title } from "../data/types.js";
+import { type MoviesTypes, type MovieListTypes } from "../data/types.js";
 
 export const prerender = true;
 
 export async function getStaticPaths() {
-  try {
-    let movies = await (requestAPIList() as Promise<MovieListTypes>);
-    if (!movies || !movies.titles) {
-      throw new Error('No movies or titles found');
-    }
-    const paths = movies.titles ? movies.titles.map((movie) => ({ params: { id: movie.id } })) : [];
+    const movies = await (requestAPIList() as Promise<MovieListTypes>);
+    const paths = movies.titles.map((movie) => ({ params: { id: movie.id } }));
     return paths;
-  } catch (error) {
-    console.error('Error in getStaticPaths:', error);
-  }
 }
 
 let { id } = Astro.params;
@@ -25,6 +18,19 @@ let { id } = Astro.params;
 let data = await (requestAPI(id) as Promise<MoviesTypes>);
 
 const movies = await (requestAPIList() as Promise<MovieListTypes>);
+let randomMoviesID = movies.titles.sort(() => Math.random() - 0.5).slice(0, 4);
+
+let randomMovies = [];
+
+for (let i = 0; i < randomMoviesID.length; i++) {
+    let movie = await (requestAPI(randomMoviesID[i].id) as Promise<MoviesTypes>);
+    
+    while (movie.poster === null || movie.poster === undefined) {
+        movie = await (requestAPI(randomMoviesID[i].id) as Promise<MoviesTypes>);
+    }
+    
+    randomMovies.push(movie);
+}
 ---
 
 <Layout title=`${data.title} - Filmlane`>
@@ -227,17 +233,17 @@ const movies = await (requestAPIList() as Promise<MovieListTypes>);
           <ul class="movies-list">
 
             {
-              // randomMovies.map((movie) => {
-              //   return (
-              //     <Card
-              //       id = {movie?.id ?? 3182279}
-              //       src = {movie.poster}
-              //       movieTitle={movie.title}
-              //       year = {movie.year}
-              //       userRating={movie.user_rating}
-              //       duration = {movie.runtime_minutes??0}
-              //     />
-              //   )})
+              randomMovies.map((movie) => {
+                return (
+                  <Card
+                    id = {movie?.id ?? 3182279}
+                    src = {movie.poster}
+                    movieTitle={movie.title}
+                    year = {movie.year}
+                    userRating={movie.user_rating}
+                    duration = {movie.runtime_minutes??0}
+                  />
+                )})
             }
 
           </ul>
