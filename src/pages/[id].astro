@@ -2,14 +2,22 @@
 
 import Layout from "../layouts/Layout.astro";
 import Card from "../components/Card.astro";
-export const prerender = true;
 import { requestAPI, requestAPIList }  from "../data/request.js";
 import { type MoviesTypes, type MovieListTypes } from "../data/types.js";
 
+export const prerender = true;
+
 export async function getStaticPaths() {
-  let movies = await (requestAPIList() as Promise<MovieListTypes>);
-  const paths = movies && movies.titles ? movies.titles.map((movie) => ({ params: { id: movie.id } })) : [];
-  return paths;
+  try {
+    let movies = await (requestAPIList() as Promise<MovieListTypes>);
+    if (!movies || !movies.titles) {
+      throw new Error('No movies or titles found');
+    }
+    const paths = movies.titles.map((movie) => ({ params: { id: movie.id } }));
+    return paths;
+  } catch (error) {
+    console.error('Error in getStaticPaths:', error);
+  }
 }
 
 let { id } = Astro.params;
