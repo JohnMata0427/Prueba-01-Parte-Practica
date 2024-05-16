@@ -26,8 +26,11 @@ let data = await (requestAPI(id) as Promise<MoviesTypes>);
 
 const movies = await (requestAPIList() as Promise<MovieListTypes>);
 
-function getRandomElement(arr: Title[]) {
+  function getRandomElement(arr: Title[]) {
   try {
+    if (!arr) {
+      throw new Error('No array provided');
+    }
     const randomIndex = Math.floor(Math.random() * arr.length);
     return arr[randomIndex];
   } catch (error) {
