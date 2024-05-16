@@ -34,7 +34,15 @@ function getRandomElement<T>(arr: T[]): T {
 let randomMovies = []
 
 for (let i = 0; i < 4; i++) {
-  randomMovies.push(await (requestAPI(getRandomElement(movies.titles).id) as Promise<MoviesTypes>))
+  let randomMovie = getRandomElement(movies.titles);
+  let request = await (requestAPI(randomMovie.id) as Promise<MoviesTypes>)
+  
+  while (request.poster === null) {
+    randomMovie = getRandomElement(movies.titles);
+    request = await (requestAPI(randomMovie.id) as Promise<MoviesTypes>)
+  }
+
+  randomMovies.push(request)
 }
 
 ---
