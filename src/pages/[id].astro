@@ -17,7 +17,12 @@ let { id } = Astro.params;
 
 let data = await (requestAPI(id) as Promise<MoviesTypes>);
 
-const movies = await (requestAPIList() as Promise<MovieListTypes>);
+let movies = await (requestAPIList() as Promise<MovieListTypes>);
+
+while (movies.titles === null || movies.titles === undefined) {
+    movies = await (requestAPIList() as Promise<MovieListTypes>);
+}
+
 let randomMoviesID = movies.titles.sort(() => Math.random() - 0.5).slice(0, 4);
 
 let randomMovies = [];
@@ -31,6 +36,7 @@ for (let i = 0; i < randomMoviesID.length; i++) {
     
     randomMovies.push(movie);
 }
+
 ---
 
 <Layout title=`${data.title} - Filmlane`>
