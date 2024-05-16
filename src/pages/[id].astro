@@ -3,7 +3,7 @@
 import Layout from "../layouts/Layout.astro";
 import Card from "../components/Card.astro";
 import { requestAPI, requestAPIList }  from "../data/request.js";
-import { type MoviesTypes, type MovieListTypes } from "../data/types.js";
+import { type MoviesTypes, type MovieListTypes, type Title } from "../data/types.js";
 
 export const prerender = true;
 
@@ -26,8 +26,11 @@ let data = await (requestAPI(id) as Promise<MoviesTypes>);
 
 const movies = await (requestAPIList() as Promise<MovieListTypes>);
 
-function getRandomElement<T>(arr: T[]): T {
-    const randomIndex = Math.floor(Math.random() * arr.length ?? 0);
+function getRandomElement(arr: Title[]) {
+  if (!arr.length) {
+    return null;
+  }
+    const randomIndex = Math.floor(Math.random() * arr.length);
     return arr[randomIndex];
 }
 
@@ -35,11 +38,11 @@ let randomMovies = []
 
 for (let i = 0; i < 4; i++) {
   let randomMovie = getRandomElement(movies.titles);
-  let request = await (requestAPI(randomMovie.id) as Promise<MoviesTypes>)
+  let request = await (requestAPI(randomMovie?.id ?? 3182279) as Promise<MoviesTypes>)
   
   while (request.poster === null) {
     randomMovie = getRandomElement(movies.titles);
-    request = await (requestAPI(randomMovie.id) as Promise<MoviesTypes>)
+    request = await (requestAPI(randomMovie?.id ?? 3182279) as Promise<MoviesTypes>)
   }
 
   randomMovies.push(request)
@@ -250,7 +253,7 @@ for (let i = 0; i < 4; i++) {
               randomMovies.map((movie) => {
                 return (
                   <Card
-                    id = {movie.id}
+                    id = {movie?.id ?? 3182279}
                     src = {movie.poster}
                     movieTitle={movie.title}
                     year = {movie.year}
