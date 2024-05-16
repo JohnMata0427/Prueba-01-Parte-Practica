@@ -12,7 +12,7 @@ export async function requestAPI (id: number) {
 
 export async function requestAPIList () {
     try {
-      const response = await fetch('https://api.watchmode.com/v1/list-titles/?apiKey=M8kai80oTOyD4A55dvZpwUdPjJbhE25VhlQ63v3n&append_to_response=sources');
+      const response = await fetch('https://api.watchmode.com/v1/list-titles/?apiKey=M8kai80oTOyD4A55dvZpwUdPjJbhE25VhlQ63v3n&append_to_response=sources&limit=15');
       const data = (await response.json() as MovieListTypes);
       return data;
     } catch (error) {
