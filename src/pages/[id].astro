@@ -19,21 +19,12 @@ let data = await (requestAPI(id) as Promise<MoviesTypes>);
 
 let movies = await (requestAPIList() as Promise<MovieListTypes>);
 
-while (movies.titles === null || movies.titles === undefined) {
-    movies = await (requestAPIList() as Promise<MovieListTypes>);
-}
-
 let randomMoviesID = movies.titles.sort(() => Math.random() - 0.5).slice(0, 4);
 
 let randomMovies = [];
 
 for (let i = 0; i < randomMoviesID.length; i++) {
     let movie = await (requestAPI(randomMoviesID[i].id) as Promise<MoviesTypes>);
-    
-    while (movie.poster === null || movie.poster === undefined) {
-        movie = await (requestAPI(randomMoviesID[i].id) as Promise<MoviesTypes>);
-    }
-    
     randomMovies.push(movie);
 }
 
