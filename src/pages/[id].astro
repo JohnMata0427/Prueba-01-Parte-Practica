@@ -25,29 +25,6 @@ let { id } = Astro.params;
 let data = await (requestAPI(id) as Promise<MoviesTypes>);
 
 const movies = await (requestAPIList() as Promise<MovieListTypes>);
-
-  function getRandomElement(arr: Title[]) {
-  try {
-    if (!arr) {
-      throw new Error('No array provided');
-    }
-    const randomIndex = Math.floor(Math.random() * arr.length);
-    return arr[randomIndex];
-  } catch (error) {
-    console.error('Error in getRandomElement:', error);
-    return null;
-  }
-}
-
-let randomMovies = []
-
-for (let i = 0; i < 2; i++) {
-  let randomMovie = getRandomElement(movies.titles);
-  let request = await (requestAPI(randomMovie?.id ?? 3182279) as Promise<MoviesTypes>)
-    
-  randomMovies.push(request)
-}
-
 ---
 
 <Layout title=`${data.title} - Filmlane`>
@@ -250,17 +227,17 @@ for (let i = 0; i < 2; i++) {
           <ul class="movies-list">
 
             {
-              randomMovies.map((movie) => {
-                return (
-                  <Card
-                    id = {movie?.id ?? 3182279}
-                    src = {movie.poster}
-                    movieTitle={movie.title}
-                    year = {movie.year}
-                    userRating={movie.user_rating}
-                    duration = {movie.runtime_minutes??0}
-                  />
-                )})
+              // randomMovies.map((movie) => {
+              //   return (
+              //     <Card
+              //       id = {movie?.id ?? 3182279}
+              //       src = {movie.poster}
+              //       movieTitle={movie.title}
+              //       year = {movie.year}
+              //       userRating={movie.user_rating}
+              //       duration = {movie.runtime_minutes??0}
+              //     />
+              //   )})
             }
 
           </ul>
